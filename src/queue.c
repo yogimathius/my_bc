@@ -35,7 +35,7 @@ int pop(struct node** top) {
     struct node *t;
     if (*top == NULL) {
         printf("Stack underflow \n");
-        return;
+        return 1;
     }
     else {
         t = *top;
