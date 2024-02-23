@@ -25,18 +25,27 @@ void parse(const char *s){
     while (*s != '\0'){
         if (*s == '('){
             dprintf(1, "left bracket: %s\n", s);
+            // push it onto the stack
         }
         else if (*s == ')'){
             dprintf(1, "right bracket: %s\n", s);
+            // While there's not a left bracket at the top of the stack:
+            // Pop operators from the stack onto the output queue.
+            // Pop the left bracket from the stack and discard it
         }
         else if (*s == '+' || *s == '-' || *s == '*' || *s == '/'){
             dprintf(1, "operator: %c\n", *s);
+            // While there's an operator on the top of the stack with greater precedence:
+            // Pop operators from the stack onto the output queue
+            // Push the current operator onto the stack
         }
         else if (*s >= '0' && *s <= '9'){
             dprintf(1, "number: %c\n", *s);
+            // add it to queue
         }
         s++;
     }
+    // While there are operators on the stack, pop them to the queue
 }
 
 int my_bc(const char *s){
