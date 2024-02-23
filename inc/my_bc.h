@@ -9,4 +9,23 @@
 int my_bc(const char *);
 void help();
 
+struct node
+{
+    int data;
+    struct node *next;
+};
+void push(struct node** top, int data);
+int pop(struct node** top);
+struct queue
+{
+    struct node *stack1;
+    struct node *stack2;
+};
+
+void enqueue(struct queue *q, int x);
+void dequeue(struct queue *q);
+void display(const struct node *top1, const struct node *top2);
+void push(struct node** top, int data);
+int pop(struct node** top);
+
 #endif
