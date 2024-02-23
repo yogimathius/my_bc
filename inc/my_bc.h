@@ -18,8 +18,7 @@ void push(struct node** top, int data);
 int pop(struct node** top);
 struct queue
 {
-    struct node *stack1;
-    struct node *stack2;
+    struct node *stack;
 };
 
 void enqueue(struct queue *q, int x);
