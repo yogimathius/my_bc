@@ -2,18 +2,19 @@
 ***
 
 ## Task
-TODO - What is the problem? And where is the challenge?
+<!-- TODO - What is the problem? And where is the challenge? -->
 
 ## Description
-TODO - How have you solved the problem?
+<!-- TODO - How have you solved the problem? -->
+Solved problem using ["Shunting Yard Algorithm"](https://brilliant.org/wiki/shunting-yard-algorithm/)
 
 ## Installation
-TODO - How to install your project? npm install? make? make re?
+<!-- TODO - How to install your project? npm install? make? make re? -->
 
 ## Usage
-TODO - How does it work?
+<!-- TODO - How does it work? -->
 ```
-./my_project argument1 argument2
+./my_bc argument1 argument2
 ```
 
 ### The Core Team
