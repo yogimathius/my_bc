@@ -36,9 +36,24 @@ int parse(const char *tokens){
         case '/':
         case '%':
             dprintf(1, "operator: %c\n", *tokens);
-            // 5.While there'tokens an operator on the top of the stack with greater precedence:
-            // 6.Pop operators from the stack onto the output queue
-            // 7.Push the current operator onto the stack
+            struct operator_type *op = getop(*tokens);
+            if (op == NULL){
+                dprintf(2, "ERROR: operator not found\n");
+                return EXIT_FAILURE;
+            }
+            if (q.stack2 == NULL){
+                push_node(&q.stack2, op->op);
+            }
+            else {
+                int i = 0;
+                // 5.While there'tokens an operator on the top of the stack with greater precedence:
+                while (q.operators[i] && q.operators[i]->prec > op->prec){
+                    // 6.Pop operators from the stack onto the output queue
+                    enqueue(&q, pop_opstack(q.operators)->op);
+                }
+                // 7.Push the current operator onto the stack
+                push_opstack(op, q.operators);
+            }
             break;
         case '(':
             dprintf(1, "left bracket: %c\n", *tokens);
