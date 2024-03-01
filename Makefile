@@ -1,6 +1,6 @@
 BIN=my_bc
 CC=gcc
-SRC=src/my_bc.c src/main.c src/queue.c
+SRC=src/my_bc.c src/main.c src/queue.c src/op.c
 INC=inc/
 
 all:
