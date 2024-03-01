@@ -43,17 +43,9 @@ struct operator_type {
   int prec;
   int assoc;
   int unary;
-  float (*eval)(float a1, float a2);
-} operators[]={
-  {'_', 10, ASSOC_RIGHT, 1, _uminus},
-  {'^', 9,  ASSOC_RIGHT, 0, _exp},
-  {'*', 8,  ASSOC_LEFT,  0, _mul},
-  {'/', 8,  ASSOC_LEFT,  0, _div},
-  {'%', 8,  ASSOC_LEFT,  0, _mod},
-  {'+', 5,  ASSOC_LEFT,  0, _add},
-  {'-', 5,  ASSOC_LEFT,  0, _sub},
-  {'(', 0,  ASSOC_NONE,  0, NULL},
-  {')', 0,  ASSOC_NONE,  0, NULL}
+  int (*eval)(int a1, int a2);
 };
+
+struct operator_type *getop(char ch);
 
 #endif
