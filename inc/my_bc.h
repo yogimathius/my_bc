@@ -16,8 +16,8 @@ struct node {
     struct node *next;
 };
 
-void push(struct node** top, int data);
-int pop(struct node** top);
+void push_node(struct node** top, int data);
+int pop_node(struct node** top);
 struct queue {
     struct node *stack1;
     struct node *stack2;
@@ -27,8 +27,8 @@ struct queue {
 void enqueue(struct queue *q, int x);
 void dequeue(struct queue *q);
 void display(const struct node *top1, const struct node *top2);
-void push(struct node** top, int data);
-int pop(struct node** top);
+// void push(struct node** top, int data);
+// int pop(struct node** top);
 
 int _uminus(int a, int b);
 int _exp(int a, int b);
@@ -49,5 +49,8 @@ struct operator_type {
 };
 
 struct operator_type *getop(char ch);
+
+struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK]);
+void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK]);
 
 #endif

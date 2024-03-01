@@ -1,7 +1,7 @@
 #include <my_bc.h>
 
 void enqueue(struct queue *q, int x){
-    push(&q->stack1, x);
+    push_node(&q->stack1, x);
 }
 
 void dequeue(struct queue *q){
@@ -12,15 +12,15 @@ void dequeue(struct queue *q){
     }
     if (q->stack2 == NULL) {
         while (q->stack1) {
-            x = pop(&q->stack1);
-            push(&q->stack2, x);
+            x = pop_node(&q->stack1);
+            push_node(&q->stack2, x);
         }
     }
-    x = pop(&q->stack2);
+    x = pop_node(&q->stack2);
     printf("%d\n", x);
 }
 
-void push(struct node** top, int data){
+void push_node(struct node** top, int data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
         new->data = data;
@@ -31,7 +31,7 @@ void push(struct node** top, int data){
     printf("Stack overflow \n");
 }
 
-int pop(struct node** top){
+int pop_node(struct node** top){
     struct node *t;
     if (*top){
         t = *top;
@@ -46,11 +46,11 @@ int pop(struct node** top){
 
 void display(const struct node *top1, const struct node *top2){
     while (top1){
-        printf("%d\n", top1->data);
+        printf("top1 %d\n", top1->data);
         top1 = top1->next;
     }
     while (top2){
-        printf("%d\n", top2->data);
+        printf("top2 %d\n", top2->data);
         top2 = top2->next;
     }
 }
