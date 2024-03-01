@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_OP_STACK 100
+
 int my_bc(const char *);
 void help();
 
@@ -19,8 +21,8 @@ int pop(struct node** top);
 struct queue {
     struct node *stack1;
     struct node *stack2;
+    struct operator_type *operators[MAX_OP_STACK];
 };
-
 
 void enqueue(struct queue *q, int x);
 void dequeue(struct queue *q);
