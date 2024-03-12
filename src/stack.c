@@ -57,7 +57,7 @@ void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP
   (*total_operations)++;
 }
 
-struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK], int *total_operations)
+struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK], int *total_operations) {
     if(opstack[(*total_operations - 1)] == NULL) {
         printf("stack empty\n");
         return NULL;

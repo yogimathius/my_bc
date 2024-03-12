@@ -4,22 +4,6 @@ void enqueue(struct queue *q, int x){
     push_node(&q->stack1, x);
 }
 
-void dequeue(struct queue *q){
-    int x;
-    if (q->stack1 == NULL && q->stack2 == NULL){
-        printf("queue is empty");
-        return;
-    }
-    if (q->stack2 == NULL) {
-        while (q->stack1) {
-            x = pop_node(&q->stack1);
-            push_node(&q->stack2, x);
-        }
-    }
-    x = pop_node(&q->stack2);
-    printf("%d\n", x);
-}
-
 void push_node(struct node** top, int data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
