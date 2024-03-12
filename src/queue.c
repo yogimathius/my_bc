@@ -4,7 +4,7 @@ void enqueue(struct queue *q, char x){
     push_node(&q->stack1, x);
 }
 
-void push_node(struct node** bottom, char data){
+void push_node(struct node** top, int data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
         new->data = data;
