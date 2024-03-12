@@ -50,7 +50,7 @@ struct operator_type operators[]={
 };
 
 struct operator_type *getop(char ch) {
-  int i;
+  unsigned int i;
   for(i=0; i<sizeof operators/sizeof operators[0]; ++i) {
     if(operators[i].op==ch) return operators+i;
   }
