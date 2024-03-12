@@ -4,7 +4,7 @@
 #include <my_bc.h>
 
 struct stack {
-    int top;
+    unsigned int top;
     unsigned size;
     int* array;
 };
@@ -17,12 +17,12 @@ struct stack *new(unsigned size){
     return s;
 }
 
-bool isfull(struct stack* s){
+bool isfull(const struct stack* s){
     return s->top == s->size - 1;
 }
 
-bool isempty(struct stack* s){
-    return s->top == -1;
+bool isempty(const struct stack* s){
+    return s->top == (unsigned int)-1;
 }
 
 void push(struct stack* s, int item){
@@ -47,23 +47,23 @@ int peek(struct stack *s){
     return s->array[s->top];
 }
 
-int nopstack=0;
-
-
-void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK])
+void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int *total_operations)
 {
-  if(nopstack>MAX_OP_STACK-1) {
+  if((*total_operations)>MAX_OP_STACK-1) {
     fprintf(stderr, "ERROR: Operator stack overflow\n");
     exit(EXIT_FAILURE);
   }
-  opstack[nopstack++]=op;
+  opstack[*total_operations]=op;
+  (*total_operations)++;
 }
 
-struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK])
-{
-  if(!nopstack) {
-    fprintf(stderr, "ERROR: Operator stack empty\n");
-    exit(EXIT_FAILURE);
-  }
-  return opstack[--nopstack];
+struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK], int *total_operations)
+    if(opstack[(*total_operations - 1)] == NULL) {
+        printf("stack empty\n");
+        return NULL;
+    }
+    opstack[*total_operations-1] = NULL;
+    (*total_operations) -= 1;
+
+    return opstack[*total_operations];
 }

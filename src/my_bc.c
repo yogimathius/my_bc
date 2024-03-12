@@ -9,67 +9,64 @@ int parse(const char *tokens){
         .stack1 = NULL,
         .stack2 = NULL
     };
+    int total_operations = 0;
     // struct stack operators = Stack.new();
     if (tokens == NULL){
         dprintf(2, "parse error\n");
         return EXIT_FAILURE;
     }
     while (*tokens){
-        switch (*tokens){
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
+        if (*tokens >= '0' && *tokens <= '9') {
             dprintf(1, "number: %c\n", *tokens);
             enqueue(&q, *tokens - 48);
-            break;
-        case '_':
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-        case '%':
+        } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/') {
             dprintf(1, "operator: %c\n", *tokens);
             struct operator_type *op = getop(*tokens);
             if (op == NULL){
                 dprintf(2, "ERROR: operator not found\n");
                 return EXIT_FAILURE;
             }
-            if (q.stack2 == NULL){
-                push_node(&q.stack2, op->op);
+            if (q.operators[0] == NULL){
+                push_opstack(op, q.operators, &total_operations);
             }
             else {
                 int i = 0;
-                // 5.While there'tokens an operator on the top of the stack with greater precedence:
                 while (q.operators[i] && q.operators[i]->prec > op->prec){
-                    // 6.Pop operators from the stack onto the output queue
-                    enqueue(&q, pop_opstack(q.operators)->op);
+                    enqueue(&q, pop_opstack(q.operators, &total_operations)->op);
                 }
-                // 7.Push the current operator onto the stack
-                push_opstack(op, q.operators);
+                push_opstack(op, q.operators, &total_operations);
             }
-            break;
-        case '(':
+        } else if (*tokens == '(') {
             dprintf(1, "left bracket: %c\n", *tokens);
-            // push it onto the stack
-            break;
-        case ')':
+            push_opstack(getop(*tokens), q.operators, &total_operations);
+        } else if (*tokens == ')') {
             dprintf(1, "right bracket: %c\n", *tokens);
-            // 10. While there'tokens not a left bracket at the top of the stack:
-            // 11.      Pop operators from the stack onto the output queue.
-            // 12. Pop the left bracket from the stack and discard it
-            break;
+            while (q.operators[total_operations - 1]->op != '('){
+                printf("test\n");
+                struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
+                if (popped_operator != NULL) {
+                    printf("enqueing\n");
+                    enqueue(&q,popped_operator->op);
+                }
+            }
+            printf("popping %c\n", q.operators[total_operations - 1]->op);
+            pop_opstack(q.operators, &total_operations);
+            if (q.operators[0] == NULL) {
+                printf("success\n");
+            }
+
         }
         tokens += 1;
     }
     // 13. While there are operators on the stack, pop them to the queue
-    display(q.stack1, q.stack2);
+    // while (q.operators[0] != NULL){
+    //     printf("test %c\n", q.operators[0]->op);
+    //     struct operator_type *popped_operator = pop_opstack(q.operators);
+    //     if (popped_operator != NULL) {
+    //         enqueue(&q, popped_operator->op);
+    //     }
+    // }
+    // display(q.stack1, q.stack2);
     return EXIT_SUCCESS;
 }
 
