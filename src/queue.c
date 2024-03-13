@@ -7,7 +7,6 @@ void enqueue(struct queue *q, char x){
 void push_node(struct node** top, char data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
-        printf("adding data: %c\n", data);
         new->data = data;
         new->next = *top;
         *top = new;
@@ -16,17 +15,17 @@ void push_node(struct node** top, char data){
     printf("Stack overflow \n");
 }
 
-int pop_node(struct node** top){
+char pop_node(struct node** top){
     struct node *t;
     if (*top){
         t = *top;
-        int data = t->data;
+        char data = t->data;
         *top = t->next;
         free(t);
         return data;
     }
     printf("Stack underflow \n");
-    return 1;
+    return '0';
 }
 
 void display(const struct node *top1, const struct node *top2){
