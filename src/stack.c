@@ -54,7 +54,6 @@ void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP
     exit(EXIT_FAILURE);
   }
   opstack[*total_operations]=op;
-  printf("added to opstack: %c\n", opstack[*total_operations]->op);
   (*total_operations)++;
 }
 
