@@ -4,16 +4,37 @@ void enqueue(struct queue *q, char x){
     push_node(&q->stack1, x);
 }
 
-void push_node(struct node** top, char data){
+void push_node(struct node** bottom, char data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
         new->data = data;
-        new->next = *top;
-        *top = new;
+        new->next = NULL;
+
+        struct node* current = *bottom;
+        if (current == NULL) {
+            *bottom = new;
+        } else {
+            while (current->next != NULL) {
+                current = current->next;
+            }
+            current->next = new;
+        }
         return;
     }
     printf("Stack overflow \n");
 }
+
+void push_to_bottom(struct node** bottom, char data){
+    struct node* new = malloc(sizeof(struct node));
+    if (new){
+        new->data = data;
+        new->next = *bottom;
+        *bottom = new;
+        return;
+    }
+    printf("Stack overflow \n");
+}
+
 
 char pop_node(struct node** top){
     struct node *t;

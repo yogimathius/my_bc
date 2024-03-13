@@ -11,14 +11,12 @@ int parse(const char *tokens){
         .operators = {}
     };
     int total_operations = 0;
-    // struct stack operators = Stack.new();
     if (tokens == NULL){
         dprintf(2, "parse error\n");
         return EXIT_FAILURE;
     }
     while (*tokens){
         if (*tokens >= '0' && *tokens <= '9') {
-            dprintf(1, "\n======number======: %c\n", *tokens);
             enqueue(&q, *tokens);
         } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/') {
             struct operator_type *op = getop(*tokens);
@@ -27,11 +25,13 @@ int parse(const char *tokens){
                 return EXIT_FAILURE;
             }
             if (q.operators[0] == NULL){
-                push_opstack(op, q.operators, &total_operations);
+                push_node(&q.stack2, *tokens);
             }
             else {
                 while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
-                    enqueue(&q, pop_opstack(q.operators, &total_operations)->op);
+                    struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
+
+                    push_node(&q.stack2, popped_operator->op);
                 }
                 push_opstack(op, q.operators, &total_operations);
             }
@@ -41,7 +41,7 @@ int parse(const char *tokens){
             while (q.operators[total_operations - 1]->op != '('){
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
                 if (popped_operator != NULL) {
-                    enqueue(&q,popped_operator->op);
+                    push_node(&q.stack2, popped_operator->op);
                 }
             }
             pop_opstack(q.operators, &total_operations);
@@ -49,22 +49,15 @@ int parse(const char *tokens){
         }
         tokens += 1;
     }
-    // 13. While there are operators on the stack, pop them to the queue
     while (q.operators[0] != NULL){
-        // printf("test %c\n", q.operators[0]->op);
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
         if (popped_operator != NULL) {
             enqueue(&q, popped_operator->op);
         }
     }
     display(q.stack1, q.stack2);
-    while (q.stack1 != NULL) {
-        char data = q.stack1->data;
-        if (data >= '0' && data <= '9') {
-            push_node(&q.stack2, pop_node(&q.stack1));
-        }
-        if (data == '+' || data == '-' || data == '*' || data == '/') {
-            struct operator_type *operator = getop(pop_node(&q.stack1));
+    while (q.stack1 != NULL && q.stack2 != NULL) {
+            struct operator_type *operator = getop(pop_node(&q.stack2));
             char lhs_char = pop_node(&q.stack1);
             char rhs_char = pop_node(&q.stack1);
             printf("lhs_char: %c, rhs_char: %c\n", lhs_char, rhs_char);
@@ -74,7 +67,9 @@ int parse(const char *tokens){
             
             int result = operator->eval(lhs, rhs);
             printf("result calculated: %d\n", result);
-        }
+            // enqueue(&q, result);
+            push_to_bottom(&q.stack1, result + '0');
+            display(q.stack1, q.stack2);
     }
     return EXIT_SUCCESS;
 }

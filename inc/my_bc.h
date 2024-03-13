@@ -17,6 +17,7 @@ struct node {
 };
 
 void push_node(struct node** top, char data);
+void push_to_bottom(struct node** bottom, char data);
 char pop_node(struct node** top);
 struct queue {
     struct node *stack1;
