@@ -1,6 +1,0 @@
-[ ] Handle floats, long, double..
-[ ] Exit failure status code
-[ ] Check all possible operators %,..
-[0/1] Bonus
-    [ ] Allow spaces in string
-    [ ] Allow multiple string for diff operations at once + mod concat strings into 1 single op
