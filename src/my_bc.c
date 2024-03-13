@@ -21,30 +21,23 @@ int parse(const char *tokens){
             dprintf(1, "\n======number======: %c\n", *tokens);
             enqueue(&q, *tokens);
         } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/') {
-            dprintf(1, "\n======operator======: %c\n", *tokens);
             struct operator_type *op = getop(*tokens);
             if (op == NULL){
                 dprintf(2, "ERROR: operator not found\n");
                 return EXIT_FAILURE;
             }
             if (q.operators[0] == NULL){
-                printf("operators null, adding: %c\n", op->op);
                 push_opstack(op, q.operators, &total_operations);
             }
             else {
-                printf("checking precedence: %c\n", q.operators[total_operations - 1]->op);
-                printf("checking precedence: %c\n", op->op);
                 while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
-                    printf("precedent higher, enqueuing: %c\n", q.operators[total_operations - 1]->op);
                     enqueue(&q, pop_opstack(q.operators, &total_operations)->op);
                 }
                 push_opstack(op, q.operators, &total_operations);
             }
         } else if (*tokens == '(') {
-            dprintf(1, "\n======left bracket======: %c\n", *tokens);
             push_opstack(getop(*tokens), q.operators, &total_operations);
         } else if (*tokens == ')') {
-            dprintf(1, "\n======right bracket======: %c\n", *tokens);
             while (q.operators[total_operations - 1]->op != '('){
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
                 if (popped_operator != NULL) {
@@ -52,22 +45,37 @@ int parse(const char *tokens){
                 }
             }
             pop_opstack(q.operators, &total_operations);
-            if (q.operators[0] == NULL) {
-                printf("successfully popped all operators\n");
-            }
 
         }
         tokens += 1;
     }
     // 13. While there are operators on the stack, pop them to the queue
     while (q.operators[0] != NULL){
-        printf("test %c\n", q.operators[0]->op);
+        // printf("test %c\n", q.operators[0]->op);
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
         if (popped_operator != NULL) {
             enqueue(&q, popped_operator->op);
         }
     }
     display(q.stack1, q.stack2);
+    while (q.stack1 != NULL) {
+        char data = q.stack1->data;
+        if (data >= '0' && data <= '9') {
+            push_node(&q.stack2, pop_node(&q.stack1));
+        }
+        if (data == '+' || data == '-' || data == '*' || data == '/') {
+            struct operator_type *operator = getop(pop_node(&q.stack1));
+            char lhs_char = pop_node(&q.stack1);
+            char rhs_char = pop_node(&q.stack1);
+            printf("lhs_char: %c, rhs_char: %c\n", lhs_char, rhs_char);
+
+            int lhs = (int)(lhs_char) - '0';
+            int rhs = (int)(rhs_char) - '0';
+            
+            int result = operator->eval(lhs, rhs);
+            printf("result calculated: %d\n", result);
+        }
+    }
     return EXIT_SUCCESS;
 }
 
