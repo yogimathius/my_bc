@@ -1,12 +1,13 @@
 #include <my_bc.h>
 
-void enqueue(struct queue *q, int x){
+void enqueue(struct queue *q, char x){
     push_node(&q->stack1, x);
 }
 
-void push_node(struct node** top, int data){
+void push_node(struct node** top, char data){
     struct node* new = malloc(sizeof(struct node));
     if (new){
+        printf("adding data: %c\n", data);
         new->data = data;
         new->next = *top;
         *top = new;
@@ -30,11 +31,11 @@ int pop_node(struct node** top){
 
 void display(const struct node *top1, const struct node *top2){
     while (top1){
-        printf("top1 %d\n", top1->data);
+        printf("top1 %c\n", top1->data);
         top1 = top1->next;
     }
     while (top2){
-        printf("top2 %d\n", top2->data);
+        printf("top2 %c\n", top2->data);
         top2 = top2->next;
     }
 }
