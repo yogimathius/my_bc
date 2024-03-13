@@ -1,19 +1,23 @@
 #include <my_bc.h>
 
 int _uminus(int a, int b){
+    printf("minus: a: %d, b: %d\n", a, b);
     (void)b;
     return -a;
 }
 
 int _exp(int a, int b){
+    printf("exp: a: %d, b: %d\n", a, b);
     return b < 0 ? 0 : (b == 0 ? 1 : a * _exp(a, b - 1));
 }
 
 int _mul(int a, int b){
+    printf("mul: a: %d, b: %d\n", a, b);
     return a * b;
 }
 
 int _div(int a, int b){
+    printf("div: a: %d, b: %d\n", a, b);
     if ( ! b){
         dprintf(2, "ERROR: Division by zero\n");
         // exit(EXIT_FAILURE);
@@ -22,6 +26,7 @@ int _div(int a, int b){
 }
 
 int _mod(int a, int b){
+    printf("mod: a: %d, b: %d\n", a, b);
     if ( ! b) {
         dprintf(2, "ERROR: Division by zero\n");
         // exit(EXIT_FAILURE);
@@ -30,10 +35,12 @@ int _mod(int a, int b){
 }
 
 int _add(int a, int b){
+    printf("add: a: %d, b: %d\n", a, b);
     return a + b;
 }
 
 int _sub(int a, int b){
+    printf("sub: a: %d, b: %d\n", a, b);
     return a - b;
 }
 
@@ -55,4 +62,4 @@ struct operator_type *getop(char ch) {
     if(operators[i].op==ch) return operators+i;
   }
   return NULL;
-}
+};
