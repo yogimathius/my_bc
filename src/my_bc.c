@@ -49,6 +49,11 @@ int parse(char *tokens){
             }
         } else if (*tokens == '(') {
             push_opstack(getop(*tokens), q.operators, &total_operations);
+            char *next_token = tokens + 1;
+            if (*next_token == ')') {
+                dprintf(2, "parse error\n");
+                return EXIT_FAILURE;
+            }
         } else if (*tokens == ')') {
             while (q.operators[total_operations - 1]->op != '('){
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
