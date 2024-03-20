@@ -76,7 +76,7 @@ int parse(char *tokens){
             int result = op->eval(lhs, rhs);
             // printf("result calculated: %d\n", result);
             // enqueue(&q, result);
-            push_to_bottom(&q.stack1, result + '0');
+            push_to_bottom(&q.stack1, result);
             // display(q.stack1, q.stack2);
     }
     int result = q.stack1->data;
