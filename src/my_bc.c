@@ -81,7 +81,7 @@ int parse(char *tokens){
     }
     int result = q.stack1->data;
     free(q.stack1);
-    return result - '0';
+    return result;
 }
 
 int my_bc(char *tokens){
