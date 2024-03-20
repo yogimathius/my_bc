@@ -50,6 +50,7 @@ char pop_node(struct node** top){
 }
 
 void display(const struct node *top1, const struct node *top2){
+    printf("\n====Displaying stack1 and stack2====\n");
     while (top1){
         printf("top1 %c ", top1->data);
         top1 = top1->next;
