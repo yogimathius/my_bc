@@ -42,6 +42,11 @@ int parse(char *tokens){
                 }
                 push_opstack(op, q.operators, &total_operations);
             }
+            char *next_token = tokens + 1;
+            if (*next_token == '+' || *next_token == '-' || *next_token == '*' || *next_token == '/' || *next_token == '%' || *next_token == '^' || *next_token == '_') {
+                dprintf(2, "parse error\n");
+                return EXIT_FAILURE;
+            }
         } else if (*tokens == '(') {
             push_opstack(getop(*tokens), q.operators, &total_operations);
         } else if (*tokens == ')') {
