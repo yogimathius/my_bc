@@ -1,4 +1,4 @@
-#include <my_bc.h>
+#include "../inc/my_bc.h"
 
 void help(){
     dprintf(1, "%s: basic calculator\n", PROG_NAME);
@@ -17,6 +17,9 @@ int parse(const char *tokens){
     }
     while (*tokens){
         if (*tokens >= '0' && *tokens <= '9') {
+            // while (*tokens++ >= '0' && *tokens <= '9') {
+                
+            // }
             enqueue(&q, *tokens);
         } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/') {
             struct operator_type *op = getop(*tokens);
@@ -57,7 +60,7 @@ int parse(const char *tokens){
     }
     display(q.stack1, q.stack2);
     while (q.stack1 != NULL && q.stack2 != NULL) {
-            struct operator_type *operator = getop(pop_node(&q.stack2));
+            struct operator_type *op = getop(pop_node(&q.stack2));
             char lhs_char = pop_node(&q.stack1);
             char rhs_char = pop_node(&q.stack1);
             printf("lhs_char: %c, rhs_char: %c\n", lhs_char, rhs_char);
@@ -65,13 +68,15 @@ int parse(const char *tokens){
             int lhs = (int)(lhs_char) - '0';
             int rhs = (int)(rhs_char) - '0';
             
-            int result = operator->eval(lhs, rhs);
+            int result = op->eval(lhs, rhs);
             printf("result calculated: %d\n", result);
             // enqueue(&q, result);
             push_to_bottom(&q.stack1, result + '0');
             display(q.stack1, q.stack2);
     }
-    return EXIT_SUCCESS;
+    int result = q.stack1->data;
+    free(q.stack1);
+    return result - '0';
 }
 
 int my_bc(const char *tokens){

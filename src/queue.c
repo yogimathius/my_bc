@@ -1,23 +1,23 @@
-#include <my_bc.h>
+#include "../inc/my_bc.h"
 
 void enqueue(struct queue *q, char x){
     push_node(&q->stack1, x);
 }
 
-void push_node(struct node** top, int data){
-    struct node* new = malloc(sizeof(struct node));
-    if (new){
-        new->data = data;
-        new->next = NULL;
+void push_node(struct node** bottom, char data){
+    struct node* new_node = (struct node*) malloc(sizeof(struct node));
+    if (new_node){
+        new_node->data = data;
+        new_node->next = NULL;
 
         struct node* current = *bottom;
         if (current == NULL) {
-            *bottom = new;
+            *bottom = new_node;
         } else {
             while (current->next != NULL) {
                 current = current->next;
             }
-            current->next = new;
+            current->next = new_node;
         }
         return;
     }
@@ -25,11 +25,11 @@ void push_node(struct node** top, int data){
 }
 
 void push_to_bottom(struct node** bottom, char data){
-    struct node* new = malloc(sizeof(struct node));
-    if (new){
-        new->data = data;
-        new->next = *bottom;
-        *bottom = new;
+    struct node* new_node = (struct node*) malloc(sizeof(struct node));
+    if (new_node){
+        new_node->data = data;
+        new_node->next = *bottom;
+        *bottom = new_node;
         return;
     }
     printf("Stack overflow \n");
@@ -51,11 +51,13 @@ char pop_node(struct node** top){
 
 void display(const struct node *top1, const struct node *top2){
     while (top1){
-        printf("top1 %c\n", top1->data);
+        printf("top1 %c ", top1->data);
         top1 = top1->next;
     }
+    printf("\n");
     while (top2){
-        printf("top2 %c\n", top2->data);
+        printf("top2 %c ", top2->data);
         top2 = top2->next;
     }
+    printf("\n");
 }

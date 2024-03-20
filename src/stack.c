@@ -1,7 +1,7 @@
-#include <stdbool.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <my_bc.h>
+#include "stdbool.h"
+#include "limits.h"
+#include "stdlib.h"
+#include "../inc/my_bc.h"
 
 void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int *total_operations)
 {

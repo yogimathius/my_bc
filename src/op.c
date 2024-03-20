@@ -1,4 +1,4 @@
-#include <my_bc.h>
+#include "../inc/my_bc.h"
 
 int _uminus(int a, int b){
     printf("minus: a: %d, b: %d\n", a, b);
