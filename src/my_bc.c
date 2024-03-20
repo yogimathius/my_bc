@@ -16,6 +16,10 @@ int parse(char *tokens){
         return EXIT_FAILURE;
     }
     while (*tokens){
+        if ((*tokens >= 'a' && *tokens <= 'z') || (*tokens >= 'A' && *tokens <= 'Z')){
+            dprintf(2, "parse error\n");
+            return EXIT_FAILURE;
+        }
         if (*tokens >= '0' && *tokens <= '9') {
             int num = 0;
             while (*tokens >= '0' && *tokens <= '9'){
