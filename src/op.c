@@ -20,7 +20,7 @@ int _div(int a, int b){
     // printf("div: a: %d, b: %d\n", a, b);
     if ( ! b){
         dprintf(2, "divide by zero\n");
-        return 0;
+        return 1;
     }
     return a / b;
 }
