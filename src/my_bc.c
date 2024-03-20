@@ -17,9 +17,6 @@ int parse(const char *tokens){
     }
     while (*tokens){
         if (*tokens >= '0' && *tokens <= '9') {
-            // while (*tokens++ >= '0' && *tokens <= '9') {
-                
-            // }
             enqueue(&q, *tokens);
         } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/') {
             struct operator_type *op = getop(*tokens);
