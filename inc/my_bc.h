@@ -8,7 +8,7 @@
 
 #define MAX_OP_STACK 100
 
-int my_bc(const char *);
+int my_bc(char *);
 void help();
 
 struct node {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../inc/my_bc.h"
 
-int main(const int ac, const char **av){
+int main(const int ac, char **av){
     if (ac == 2){
         int result = my_bc(av[1]);
         printf("%d\n", result);
