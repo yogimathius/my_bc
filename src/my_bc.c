@@ -8,13 +8,9 @@ int parse(char *tokens){
     struct queue q = {
         .stack1 = NULL,
         .stack2 = NULL,
-        .operators = {}
     };
     int total_operations = 0;
-    if (tokens == NULL){
-        dprintf(2, "parse error\n");
-        return EXIT_FAILURE;
-    }
+
     while (*tokens){
         if ((*tokens >= 'a' && *tokens <= 'z') || (*tokens >= 'A' && *tokens <= 'Z')){
             dprintf(2, "parse error\n");
@@ -27,6 +23,7 @@ int parse(char *tokens){
                 tokens++;
             }
             enqueue(&q, num);
+            push_postfix(&q, 0, '0', num);
             continue;
         } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/' || *tokens == '%' || *tokens == '^' || *tokens == '_') {
             struct operator_type *op = getop(*tokens);
@@ -40,9 +37,11 @@ int parse(char *tokens){
             else {
                 while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
                     printf("shunting yard\n ");
+                    printf("popped operator: %c\n", q.operators[total_operations - 1]->op);
                     struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
 
                     push_node(&q.stack2, popped_operator->op);
+                    push_postfix(&q, 1, popped_operator->op, 0);
                 }
                 push_opstack(op, q.operators, &total_operations);
             }
@@ -59,10 +58,12 @@ int parse(char *tokens){
                 return EXIT_FAILURE;
             }
         } else if (*tokens == ')') {
-            while (q.operators[total_operations - 1]->op != '('){
+            while (q.operators[total_operations - 1]->op != '('){   
+                printf("popped operator in brackets: %c\n", q.operators[total_operations - 1]->op);
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
                 if (popped_operator != NULL) {
                     push_node(&q.stack2, popped_operator->op);
+                    push_postfix(&q, 1, popped_operator->op, 0);
                 }
             }
             pop_opstack(q.operators, &total_operations);
@@ -70,20 +71,26 @@ int parse(char *tokens){
         }
         tokens += 1;
     }
-    while (q.operators[0] != NULL){
+    // q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec
+    int i = 0;
+    while (q.operators[i] != NULL){
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
-        if (popped_operator != NULL) {
+        if (popped_operator != NULL && popped_operator->op) {
+            printf("pushing operator to stack2: %c\n", popped_operator->op);
             push_node(&q.stack2, popped_operator->op);
+            push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
-    // display(q.stack1, q.stack2);
+    display(q.stack1, q.stack2);
+    display_postfix(q.postfix);
     while (q.stack1 != NULL && q.stack2 != NULL) {
             struct operator_type *op = getop(pop_node(&q.stack2));
+            printf("operator: %c\n", op->op);
             int lhs = pop_node(&q.stack1);
             int rhs = pop_node(&q.stack1);
-
+            printf("lhs: %d, rhs: %d\n", lhs, rhs);
             int result = op->eval(lhs, rhs);
-            // printf("result calculated: %d\n", result);
+            printf("result calculated: %d\n", result);
             // enqueue(&q, result);
             push_node(&q.stack1, result);
             // display(q.stack1, q.stack2);
@@ -94,5 +101,9 @@ int parse(char *tokens){
 }
 
 int my_bc(char *tokens){
+    if (tokens == NULL){
+        dprintf(2, "parse error\n");
+        return EXIT_FAILURE;
+    }
     return parse(tokens);;
 }
