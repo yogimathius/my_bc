@@ -20,7 +20,7 @@ void reverse_polish(struct queue *q){
     }
 }
 
-int parse(char *tokens){
+int calculate(char *tokens){
     struct queue q = {
         .final_stack = NULL,
     };
@@ -90,5 +90,5 @@ int my_bc(char *tokens){
         dprintf(2, "parse error\n");
         return EXIT_FAILURE;
     }
-    return parse(tokens);;
+    return calculate(tokens);;
 }
