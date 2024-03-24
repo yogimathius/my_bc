@@ -30,18 +30,14 @@ void push_node(struct node** bottom, char data);
 
 char pop_node(struct node** top);
 struct queue {
-    struct node *stack1;
-    struct node *stack2;
+    struct node *final_stack;
     struct stack_element *postfix;
     struct operator_type *operators[MAX_OP_STACK];
 };
 
+void display(const struct node *top1);
 
-
-void enqueue(struct queue *q, char data);
-void display(const struct node *top1, const struct node *top2);
-
-bool is_digit_char(char c);
+bool is_operand(char c);
 bool is_operator(char c);
 bool is_alpha(char c);
 
@@ -64,10 +60,13 @@ struct operator_type {
 };
 
 struct operator_type *getop(char ch);
-
 struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK], int *total_operations);
 void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int *total_operations);
+
 void push_postfix(struct queue *q, int is_operator, char my_operator, int operand);
 void display_postfix(const struct stack_element *top);
+
+bool should_push_operator(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int total_operations);
+bool should_shunt(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int total_operations);
 
 #endif

@@ -1,9 +1,5 @@
 #include "../inc/my_bc.h"
 
-void enqueue(struct queue *q, char x){
-    push_node(&q->stack1, x);
-}
-
 void push_node(struct node** bottom, char data){
     struct node* new_node = (struct node*) malloc(sizeof(struct node));
     if (new_node){
@@ -77,28 +73,24 @@ void push_to_bottom(struct node** bottom, char data){
 
 char pop_node(struct node** top){
     struct node *t;
-    if (*top){
-        t = *top;
-        char data = t->data;
-        *top = t->next;
-        free(t);
-        return data;
+    while (*top){
+        if ((*top)->next == NULL){
+            t = *top;
+            *top = NULL;
+            return t->data;
+        }
+        top = &(*top)->next;
     }
     printf("Stack underflow \n");
     return '0';
 }
 
-void display(const struct node *top1, const struct node *top2){
-    printf("\n====Displaying stack1 and stack2====\n");
+void display(const struct node *top1){
+    printf("\n====Displaying final_stack====\n");
     printf("top1 ");
     while (top1){
         printf("%d ", top1->data);
         top1 = top1->next;
-    }
-    printf("\ntop2 ");
-    while (top2){
-        printf("%c ", top2->data);
-        top2 = top2->next;
     }
     printf("\n");
 }

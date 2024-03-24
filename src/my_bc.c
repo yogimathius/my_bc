@@ -6,8 +6,7 @@ void help(){
 
 int parse(char *tokens){
     struct queue q = {
-        .stack1 = NULL,
-        .stack2 = NULL,
+        .final_stack = NULL,
     };
     int total_operations = 0;
 
@@ -16,13 +15,12 @@ int parse(char *tokens){
             dprintf(2, "parse error\n");
             return EXIT_FAILURE;
         }
-        if (is_digit_char(*tokens)) {
+        if (is_operand(*tokens)) {
             int num = 0;
-            while (is_digit_char(*tokens)){
+            while (is_operand(*tokens)){
                 num = num * 10 + (*tokens - '0');
                 tokens++;
             }
-            enqueue(&q, num);
             push_postfix(&q, 0, '0', num);
             continue;
         } else if (is_operator(*tokens)) {
@@ -31,16 +29,13 @@ int parse(char *tokens){
                 dprintf(2, "ERROR: operator not found\n");
                 return EXIT_FAILURE;
             }
-            if (q.operators[0] == NULL){
+            if (should_push_operator(op, q.operators, total_operations)){
                 push_opstack(op, q.operators, &total_operations);
             }
             else {
-                while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
-                    // printf("shunting yard\n ");
-                    // printf("popped operator: %c\n", q.operators[total_operations - 1]->op);
+                while (should_shunt(op, q.operators, total_operations)){
                     struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
 
-                    push_node(&q.stack2, popped_operator->op);
                     push_postfix(&q, 1, popped_operator->op, 0);
                 }
                 push_opstack(op, q.operators, &total_operations);
@@ -59,10 +54,8 @@ int parse(char *tokens){
             }
         } else if (*tokens == ')') {
             while (q.operators[total_operations - 1]->op != '('){   
-                // printf("popped operator in brackets: %c\n", q.operators[total_operations - 1]->op);
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
                 if (popped_operator != NULL) {
-                    push_node(&q.stack2, popped_operator->op);
                     push_postfix(&q, 1, popped_operator->op, 0);
                 }
             }
@@ -71,32 +64,30 @@ int parse(char *tokens){
         }
         tokens += 1;
     }
-    // q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec
     int i = 0;
     while (q.operators[i] != NULL){
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
         if (popped_operator != NULL && popped_operator->op) {
-            // printf("pushing operator to stack2: %c\n", popped_operator->op);
-            push_node(&q.stack2, popped_operator->op);
             push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
-    // display(q.stack1, q.stack2);
-    // display_postfix(q.postfix);
-    while (q.stack1 != NULL && q.stack2 != NULL) {
-            struct operator_type *op = getop(pop_node(&q.stack2));
-            // printf("operator: %c\n", op->op);
-            int lhs = pop_node(&q.stack1);
-            int rhs = pop_node(&q.stack1);
-            // printf("lhs: %d, rhs: %d\n", lhs, rhs);
+    while (q.postfix != NULL){
+        struct stack_element *current = q.postfix;
+        display(q.final_stack);
+        if (current->is_operator){
+            struct operator_type *op = getop(current->stack_data.my_operator);
+            int rhs = pop_node(&q.final_stack);
+            int lhs = pop_node(&q.final_stack);
             int result = op->eval(lhs, rhs);
-            // printf("result calculated: %d\n", result);
-            // enqueue(&q, result);
-            push_node(&q.stack1, result);
-            // display(q.stack1, q.stack2);
+            push_node(&q.final_stack, result);
+        } else {
+            push_node(&q.final_stack, current->stack_data.operand);
+        }
+        q.postfix = q.postfix->next;
     }
-    int result = q.stack1->data;
-    free(q.stack1);
+
+    int result = q.final_stack->data;
+    free(q.final_stack);
     return result;
 }
 
