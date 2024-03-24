@@ -1,6 +1,6 @@
 #include "../inc/my_bc.h"
 
-bool is_digit_char(char c){
+bool is_operand(char c){
     return c >= '0' && c <= '9';
 }
 

@@ -12,13 +12,14 @@ int parse(char *tokens){
     int total_operations = 0;
 
     while (*tokens){
+        // If the incoming symbols is an operand, print it..
         if (is_alpha(*tokens)){
             dprintf(2, "parse error\n");
             return EXIT_FAILURE;
         }
-        if (is_digit_char(*tokens)) {
+        if (is_operand(*tokens)) {
             int num = 0;
-            while (is_digit_char(*tokens)){
+            while (is_operand(*tokens)){
                 num = num * 10 + (*tokens - '0');
                 tokens++;
             }
@@ -71,7 +72,6 @@ int parse(char *tokens){
         }
         tokens += 1;
     }
-    // q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec
     int i = 0;
     while (q.operators[i] != NULL){
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
@@ -81,6 +81,7 @@ int parse(char *tokens){
             push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
+    // 12342-*5%+
     display(q.stack1, q.stack2);
     display_postfix(q.postfix);
     while (q.stack1 != NULL && q.stack2 != NULL) {

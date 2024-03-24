@@ -41,7 +41,7 @@ struct queue {
 void enqueue(struct queue *q, char data);
 void display(const struct node *top1, const struct node *top2);
 
-bool is_digit_char(char c);
+bool is_operand(char c);
 bool is_operator(char c);
 bool is_alpha(char c);
 
