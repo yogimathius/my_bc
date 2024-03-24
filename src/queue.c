@@ -88,17 +88,12 @@ char pop_node(struct node** top){
     return '0';
 }
 
-void display(const struct node *top1, const struct node *top2){
-    printf("\n====Displaying stack1 and stack2====\n");
+void display(const struct node *top1){
+    printf("\n====Displaying stack1====\n");
     printf("top1 ");
     while (top1){
         printf("%d ", top1->data);
         top1 = top1->next;
-    }
-    printf("\ntop2 ");
-    while (top2){
-        printf("%c ", top2->data);
-        top2 = top2->next;
     }
     printf("\n");
 }

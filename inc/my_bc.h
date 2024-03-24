@@ -31,7 +31,6 @@ void push_node(struct node** bottom, char data);
 char pop_node(struct node** top);
 struct queue {
     struct node *stack1;
-    struct node *stack2;
     struct stack_element *postfix;
     struct operator_type *operators[MAX_OP_STACK];
 };
@@ -39,7 +38,7 @@ struct queue {
 
 
 void enqueue(struct queue *q, char data);
-void display(const struct node *top1, const struct node *top2);
+void display(const struct node *top1);
 
 bool is_operand(char c);
 bool is_operator(char c);
