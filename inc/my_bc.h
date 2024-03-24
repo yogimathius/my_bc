@@ -37,7 +37,6 @@ struct queue {
 
 
 
-void enqueue(struct queue *q, char data);
 void display(const struct node *top1);
 
 bool is_operand(char c);

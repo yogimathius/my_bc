@@ -22,7 +22,6 @@ int parse(char *tokens){
                 num = num * 10 + (*tokens - '0');
                 tokens++;
             }
-            // enqueue(&q, num);
             push_postfix(&q, 0, '0', num);
             continue;
         } else if (is_operator(*tokens)) {

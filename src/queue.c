@@ -1,9 +1,5 @@
 #include "../inc/my_bc.h"
 
-void enqueue(struct queue *q, char x){
-    push_node(&q->final_stack, x);
-}
-
 void push_node(struct node** bottom, char data){
     struct node* new_node = (struct node*) malloc(sizeof(struct node));
     if (new_node){
