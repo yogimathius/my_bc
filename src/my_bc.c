@@ -73,7 +73,6 @@ int parse(char *tokens){
     }
     while (q.postfix != NULL){
         struct stack_element *current = q.postfix;
-        display(q.final_stack);
         if (current->is_operator){
             struct operator_type *op = getop(current->stack_data.my_operator);
             int rhs = pop_node(&q.final_stack);
