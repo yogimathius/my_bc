@@ -32,11 +32,14 @@ int parse(char *tokens){
                 dprintf(2, "ERROR: operator not found\n");
                 return EXIT_FAILURE;
             }
-            if (q.operators[0] == NULL){
+            // If the incoming symbol is an operator and has either higher precedence than the operator on the top of the stack, or has the same precedence as the operator on the top of the stack and is right associative, or if the top of the stack is "(" (a floor) -- push it on the stack.
+            if (should_push_operator(op, q.operators, total_operations)){
+                printf("pushing operator to stack empty: %c\n", op->op);
                 push_opstack(op, q.operators, &total_operations);
             }
             else {
-                while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
+                // If the incoming symbol is an operator and has either lower precedence than the operator on the top of the stack, or has the same precedence as the operator on the top of the stack and is left associative -- continue to pop the stack until this is not true. Then, push the incoming operator.
+                while (should_shunt(op, q.operators, total_operations)){
                     printf("shunting yard\n ");
                     printf("popped operator: %c\n", q.operators[total_operations - 1]->op);
                     struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
@@ -51,6 +54,7 @@ int parse(char *tokens){
                 dprintf(2, "parse error\n");
                 return EXIT_FAILURE;
             }
+        // If the incoming symbol is a left parenthesis, push it on the stack.
         } else if (*tokens == '(') {
             push_opstack(getop(*tokens), q.operators, &total_operations);
             char *next_token = tokens + 1;
@@ -58,6 +62,7 @@ int parse(char *tokens){
                 dprintf(2, "parse error\n");
                 return EXIT_FAILURE;
             }
+        // If the incoming symbol is a right parenthesis: discard the right     parenthesis, pop and print the stack symbols until you see a left parenthesis. Pop the left parenthesis and discard it.
         } else if (*tokens == ')') {
             while (q.operators[total_operations - 1]->op != '('){   
                 printf("popped operator in brackets: %c\n", q.operators[total_operations - 1]->op);
@@ -81,7 +86,6 @@ int parse(char *tokens){
             push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
-    // 12342-*5%+
     display(q.stack1, q.stack2);
     display_postfix(q.postfix);
     while (q.stack1 != NULL && q.stack2 != NULL) {
