@@ -4,6 +4,13 @@ void help(){
     dprintf(1, "%s: basic calculator\n", PROG_NAME);
 }
 
+void shunt_yard(struct queue q, int total_operations){
+    struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
+    if (popped_operator != NULL && popped_operator->op) {
+        push_postfix(&q, 1, popped_operator->op, 0);
+    }
+}
+
 int parse(char *tokens){
     struct queue q = {
         .final_stack = NULL,
@@ -34,9 +41,7 @@ int parse(char *tokens){
             }
             else {
                 while (should_shunt(op, q.operators, total_operations)){
-                    struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
-
-                    push_postfix(&q, 1, popped_operator->op, 0);
+                    push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
                 }
                 push_opstack(op, q.operators, &total_operations);
             }
@@ -54,10 +59,7 @@ int parse(char *tokens){
             }
         } else if (*tokens == ')') {
             while (q.operators[total_operations - 1]->op != '('){   
-                struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
-                if (popped_operator != NULL) {
-                    push_postfix(&q, 1, popped_operator->op, 0);
-                }
+                push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
             }
             pop_opstack(q.operators, &total_operations);
 
@@ -66,10 +68,7 @@ int parse(char *tokens){
     }
     int i = 0;
     while (q.operators[i] != NULL){
-        struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
-        if (popped_operator != NULL && popped_operator->op) {
-            push_postfix(&q, 1, popped_operator->op, 0);
-        }
+        push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
     }
     while (q.postfix != NULL){
         struct stack_element *current = q.postfix;
