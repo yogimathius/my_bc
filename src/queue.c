@@ -59,18 +59,6 @@ void display_postfix(const struct stack_element *top){
     printf("\n");
 }
 
-void push_to_bottom(struct node** bottom, char data){
-    struct node* new_node = (struct node*) malloc(sizeof(struct node));
-    if (new_node){
-        new_node->data = data;
-        new_node->next = *bottom;
-        *bottom = new_node;
-        return;
-    }
-    printf("Stack overflow \n");
-}
-
-
 char pop_node(struct node** top){
     struct node *t;
     while (*top){
