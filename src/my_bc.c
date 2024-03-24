@@ -25,7 +25,7 @@ int parse(char *tokens){
             enqueue(&q, num);
             push_postfix(&q, 0, '0', num);
             continue;
-        } else if (*tokens == '+' || *tokens == '-' || *tokens == '*' || *tokens == '/' || *tokens == '%' || *tokens == '^' || *tokens == '_') {
+        } else if (is_operator(*tokens)) {
             struct operator_type *op = getop(*tokens);
             if (op == NULL){
                 dprintf(2, "ERROR: operator not found\n");
@@ -46,7 +46,7 @@ int parse(char *tokens){
                 push_opstack(op, q.operators, &total_operations);
             }
             char *next_token = tokens + 1;
-            if (*next_token == '+' || *next_token == '-' || *next_token == '*' || *next_token == '/' || *next_token == '%' || *next_token == '^' || *next_token == '_') {
+            if (is_operator(*next_token)){
                 dprintf(2, "parse error\n");
                 return EXIT_FAILURE;
             }
