@@ -4,6 +4,22 @@ void help(){
     dprintf(1, "%s: basic calculator\n", PROG_NAME);
 }
 
+void reverse_polish(struct queue *q){
+    while (q->postfix != NULL){
+        struct stack_element *current = q->postfix;
+        if (current->is_operator){
+            struct operator_type *op = getop(current->stack_data.my_operator);
+            int rhs = pop_node(&q->final_stack);
+            int lhs = pop_node(&q->final_stack);
+            int result = op->eval(lhs, rhs);
+            push_node(&q->final_stack, result);
+        } else {
+            push_node(&q->final_stack, current->stack_data.operand);
+        }
+        q->postfix = q->postfix->next;
+    }
+}
+
 int parse(char *tokens){
     struct queue q = {
         .final_stack = NULL,
@@ -62,19 +78,7 @@ int parse(char *tokens){
     while (q.operators[0] != NULL){
         push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
     }
-    while (q.postfix != NULL){
-        struct stack_element *current = q.postfix;
-        if (current->is_operator){
-            struct operator_type *op = getop(current->stack_data.my_operator);
-            int rhs = pop_node(&q.final_stack);
-            int lhs = pop_node(&q.final_stack);
-            int result = op->eval(lhs, rhs);
-            push_node(&q.final_stack, result);
-        } else {
-            push_node(&q.final_stack, current->stack_data.operand);
-        }
-        q.postfix = q.postfix->next;
-    }
+    reverse_polish(&q);
 
     int result = q.final_stack->data;
     free(q.final_stack);
