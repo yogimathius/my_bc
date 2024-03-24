@@ -73,12 +73,13 @@ void push_to_bottom(struct node** bottom, char data){
 
 char pop_node(struct node** top){
     struct node *t;
-    if (*top){
-        t = *top;
-        char data = t->data;
-        *top = t->next;
-        free(t);
-        return data;
+    while (*top){
+        if ((*top)->next == NULL){
+            t = *top;
+            *top = NULL;
+            return t->data;
+        }
+        top = &(*top)->next;
     }
     printf("Stack underflow \n");
     return '0';
