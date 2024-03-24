@@ -35,8 +35,6 @@ struct queue {
     struct operator_type *operators[MAX_OP_STACK];
 };
 
-void display(const struct node *top1);
-
 bool is_operand(char c);
 bool is_operator(char c);
 bool is_alpha(char c);

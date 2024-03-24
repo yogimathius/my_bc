@@ -59,13 +59,3 @@ char pop_node(struct node** top){
     printf("Stack underflow \n");
     return '0';
 }
-
-void display(const struct node *top1){
-    printf("\n====Displaying final_stack====\n");
-    printf("top1 ");
-    while (top1){
-        printf("%d ", top1->data);
-        top1 = top1->next;
-    }
-    printf("\n");
-}
