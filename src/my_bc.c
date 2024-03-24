@@ -4,13 +4,6 @@ void help(){
     dprintf(1, "%s: basic calculator\n", PROG_NAME);
 }
 
-void shunt_yard(struct queue q, int total_operations){
-    struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
-    if (popped_operator != NULL && popped_operator->op) {
-        push_postfix(&q, 1, popped_operator->op, 0);
-    }
-}
-
 int parse(char *tokens){
     struct queue q = {
         .final_stack = NULL,
