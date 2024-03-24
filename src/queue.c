@@ -24,6 +24,45 @@ void push_node(struct node** bottom, char data){
     printf("Stack overflow \n");
 }
 
+void push_postfix(struct queue *q, int is_operator, char my_operator, int operand){
+    struct stack_element *new_node = (struct stack_element*) malloc(sizeof(struct stack_element));
+    if (new_node){
+        new_node->is_operator = 0;
+        if (is_operator){
+            new_node->is_operator = 1;
+            new_node->stack_data.my_operator = my_operator;
+        } else {
+            new_node->stack_data.operand = operand;
+        }
+        new_node->next = NULL;
+
+        struct stack_element* current = q->postfix;
+        if (current == NULL) {
+            q->postfix = new_node;
+        } else {
+            while (current->next != NULL) {
+                current = current->next;
+            }
+            current->next = new_node;
+        }
+        return;
+    }
+    printf("Stack overflow \n");
+}
+
+void display_postfix(const struct stack_element *top){
+    printf("\n====Displaying postfix====\n");
+    while (top){
+        if (top->is_operator){
+            printf("%c ", top->stack_data.my_operator);
+        } else {
+            printf("%d ", top->stack_data.operand);
+        }
+        top = top->next;
+    }
+    printf("\n");
+}
+
 void push_to_bottom(struct node** bottom, char data){
     struct node* new_node = (struct node*) malloc(sizeof(struct node));
     if (new_node){
@@ -53,7 +92,7 @@ void display(const struct node *top1, const struct node *top2){
     printf("\n====Displaying stack1 and stack2====\n");
     printf("top1 ");
     while (top1){
-        printf("%c ", top1->data);
+        printf("%d ", top1->data);
         top1 = top1->next;
     }
     printf("\ntop2 ");
