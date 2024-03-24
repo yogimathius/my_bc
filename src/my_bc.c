@@ -36,8 +36,8 @@ int parse(char *tokens){
             }
             else {
                 while (q.operators[total_operations - 1] && q.operators[total_operations - 1]->prec > op->prec){
-                    printf("shunting yard\n ");
-                    printf("popped operator: %c\n", q.operators[total_operations - 1]->op);
+                    // printf("shunting yard\n ");
+                    // printf("popped operator: %c\n", q.operators[total_operations - 1]->op);
                     struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
 
                     push_node(&q.stack2, popped_operator->op);
@@ -59,7 +59,7 @@ int parse(char *tokens){
             }
         } else if (*tokens == ')') {
             while (q.operators[total_operations - 1]->op != '('){   
-                printf("popped operator in brackets: %c\n", q.operators[total_operations - 1]->op);
+                // printf("popped operator in brackets: %c\n", q.operators[total_operations - 1]->op);
                 struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
                 if (popped_operator != NULL) {
                     push_node(&q.stack2, popped_operator->op);
@@ -76,21 +76,21 @@ int parse(char *tokens){
     while (q.operators[i] != NULL){
         struct operator_type *popped_operator = pop_opstack(q.operators, &total_operations);
         if (popped_operator != NULL && popped_operator->op) {
-            printf("pushing operator to stack2: %c\n", popped_operator->op);
+            // printf("pushing operator to stack2: %c\n", popped_operator->op);
             push_node(&q.stack2, popped_operator->op);
             push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
-    display(q.stack1, q.stack2);
-    display_postfix(q.postfix);
+    // display(q.stack1, q.stack2);
+    // display_postfix(q.postfix);
     while (q.stack1 != NULL && q.stack2 != NULL) {
             struct operator_type *op = getop(pop_node(&q.stack2));
-            printf("operator: %c\n", op->op);
+            // printf("operator: %c\n", op->op);
             int lhs = pop_node(&q.stack1);
             int rhs = pop_node(&q.stack1);
-            printf("lhs: %d, rhs: %d\n", lhs, rhs);
+            // printf("lhs: %d, rhs: %d\n", lhs, rhs);
             int result = op->eval(lhs, rhs);
-            printf("result calculated: %d\n", result);
+            // printf("result calculated: %d\n", result);
             // enqueue(&q, result);
             push_node(&q.stack1, result);
             // display(q.stack1, q.stack2);
