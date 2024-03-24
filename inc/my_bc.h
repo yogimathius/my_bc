@@ -67,7 +67,10 @@ struct operator_type *getop(char ch);
 
 struct operator_type *pop_opstack(struct operator_type *opstack[MAX_OP_STACK], int *total_operations);
 void push_opstack(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int *total_operations);
+
 void push_postfix(struct queue *q, int is_operator, char my_operator, int operand);
 void display_postfix(const struct stack_element *top);
+bool should_push_operator(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int total_operations);
+bool should_shunt(struct operator_type *op, struct operator_type *opstack[MAX_OP_STACK], int total_operations);
 
 #endif
