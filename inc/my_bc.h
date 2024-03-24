@@ -26,7 +26,7 @@ struct stack_element {
 };
 
 void push_node(struct node** bottom, char data);
-void push_to_bottom(struct node** bottom, char data);
+
 char pop_node(struct node** top);
 struct queue {
     struct node *stack1;
@@ -39,8 +39,10 @@ struct queue {
 
 void enqueue(struct queue *q, char data);
 void display(const struct node *top1, const struct node *top2);
-// void push(struct node** top, int data);
-// int pop(struct node** top);
+
+int is_digit(char c);
+int is_operator(char c);
+int is_alpha(char c);
 
 int _uminus(int a, int b);
 int _exp(int a, int b);
