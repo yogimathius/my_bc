@@ -16,9 +16,9 @@ int parse(char *tokens){
             dprintf(2, "parse error\n");
             return EXIT_FAILURE;
         }
-        if (*tokens >= '0' && *tokens <= '9') {
+        if (is_digit_char(*tokens)) {
             int num = 0;
-            while (*tokens >= '0' && *tokens <= '9'){
+            while (is_digit_char(*tokens)){
                 num = num * 10 + (*tokens - '0');
                 tokens++;
             }
