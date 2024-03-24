@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX_OP_STACK 100
 
@@ -40,9 +41,9 @@ struct queue {
 void enqueue(struct queue *q, char data);
 void display(const struct node *top1, const struct node *top2);
 
-int is_digit(char c);
-int is_operator(char c);
-int is_alpha(char c);
+bool is_digit_char(char c);
+bool is_operator(char c);
+bool is_alpha(char c);
 
 int _uminus(int a, int b);
 int _exp(int a, int b);
