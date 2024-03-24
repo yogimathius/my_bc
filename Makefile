@@ -1,8 +1,8 @@
 BIN=my_bc
 CC=gcc
-SRC=src/my_bc.c src/main.c src/queue.c src/op.c src/stack.c
+SRC=src/my_bc.c src/main.c src/queue.c src/op.c src/op_stack.c
 INC=inc/
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 
 
 all:
