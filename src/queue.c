@@ -46,19 +46,6 @@ void push_postfix(struct queue *q, int is_operator, char my_operator, int operan
     printf("Stack overflow \n");
 }
 
-void display_postfix(const struct stack_element *top){
-    printf("\n====Displaying postfix====\n");
-    while (top){
-        if (top->is_operator){
-            printf("%c ", top->stack_data.my_operator);
-        } else {
-            printf("%d ", top->stack_data.operand);
-        }
-        top = top->next;
-    }
-    printf("\n");
-}
-
 char pop_node(struct node** top){
     struct node *t;
     while (*top){
