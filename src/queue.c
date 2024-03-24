@@ -1,7 +1,7 @@
 #include "../inc/my_bc.h"
 
 void enqueue(struct queue *q, char x){
-    push_node(&q->stack1, x);
+    push_node(&q->final_stack, x);
 }
 
 void push_node(struct node** bottom, char data){
@@ -89,7 +89,7 @@ char pop_node(struct node** top){
 }
 
 void display(const struct node *top1){
-    printf("\n====Displaying stack1====\n");
+    printf("\n====Displaying final_stack====\n");
     printf("top1 ");
     while (top1){
         printf("%d ", top1->data);

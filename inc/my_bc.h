@@ -30,7 +30,7 @@ void push_node(struct node** bottom, char data);
 
 char pop_node(struct node** top);
 struct queue {
-    struct node *stack1;
+    struct node *final_stack;
     struct stack_element *postfix;
     struct operator_type *operators[MAX_OP_STACK];
 };

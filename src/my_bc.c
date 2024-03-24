@@ -6,7 +6,7 @@ void help(){
 
 int parse(char *tokens){
     struct queue q = {
-        .stack1 = NULL,
+        .final_stack = NULL,
     };
     int total_operations = 0;
 
@@ -82,30 +82,30 @@ int parse(char *tokens){
             push_postfix(&q, 1, popped_operator->op, 0);
         }
     }
-    display(q.stack1);
+    display(q.final_stack);
     display_postfix(q.postfix);
 
     while (q.postfix != NULL){
         struct stack_element *current = q.postfix;
-        display(q.stack1);
+        display(q.final_stack);
         if (current->is_operator){
             struct operator_type *op = getop(current->stack_data.my_operator);
             printf("operator: %c\n", op->op);
-            int rhs = pop_node(&q.stack1);
-            int lhs = pop_node(&q.stack1);
+            int rhs = pop_node(&q.final_stack);
+            int lhs = pop_node(&q.final_stack);
             printf("lhs: %d, rhs: %d\n", lhs, rhs);
             int result = op->eval(lhs, rhs);
             printf("result calculated: %d\n", result);
-            push_node(&q.stack1, result);
+            push_node(&q.final_stack, result);
         } else {
             printf("operand: %d\n", current->stack_data.operand);
-            push_node(&q.stack1, current->stack_data.operand);
+            push_node(&q.final_stack, current->stack_data.operand);
         }
         q.postfix = q.postfix->next;
     }
 
-    int result = q.stack1->data;
-    free(q.stack1);
+    int result = q.final_stack->data;
+    free(q.final_stack);
     return result;
 }
 
