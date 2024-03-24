@@ -59,8 +59,7 @@ int parse(char *tokens){
         }
         tokens += 1;
     }
-    int i = 0;
-    while (q.operators[i] != NULL){
+    while (q.operators[0] != NULL){
         push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
     }
     while (q.postfix != NULL){
