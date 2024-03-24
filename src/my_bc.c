@@ -12,7 +12,7 @@ int parse(char *tokens){
     int total_operations = 0;
 
     while (*tokens){
-        if ((*tokens >= 'a' && *tokens <= 'z') || (*tokens >= 'A' && *tokens <= 'Z')){
+        if (is_alpha(*tokens)){
             dprintf(2, "parse error\n");
             return EXIT_FAILURE;
         }
