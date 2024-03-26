@@ -20,7 +20,7 @@ void reverse_polish(struct queue *q){
     }
 }
 
-int parse(char *tokens, struct queue *q, int *total_operations){
+int convert_to_postfix(char *tokens, struct queue *q, int *total_operations){
     while (*tokens){
         if (is_alpha(*tokens)){
             dprintf(2, "parse error\n");
@@ -79,7 +79,7 @@ int calculate(char *tokens){
     };
     int total_operations = 0;
     
-    if (parse(tokens, &q, &total_operations) == EXIT_FAILURE){
+    if (convert_to_postfix(tokens, &q, &total_operations) == EXIT_FAILURE){
         return EXIT_FAILURE;
     }
 
