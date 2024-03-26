@@ -20,12 +20,7 @@ void reverse_polish(struct queue *q){
     }
 }
 
-int calculate(char *tokens){
-    struct queue q = {
-        .final_stack = NULL,
-    };
-    int total_operations = 0;
-
+int parse(char *tokens, struct queue *q, int *total_operations){
     while (*tokens){
         if (is_alpha(*tokens)){
             dprintf(2, "parse error\n");
@@ -37,7 +32,7 @@ int calculate(char *tokens){
                 num = num * 10 + (*tokens - '0');
                 tokens++;
             }
-            push_postfix(&q, 0, '0', num);
+            push_postfix(q, 0, '0', num);
             continue;
         } else if (is_operator(*tokens)) {
             struct operator_type *op = getop(*tokens);
@@ -50,14 +45,14 @@ int calculate(char *tokens){
                 dprintf(2, "parse error\n");
                 return EXIT_FAILURE;
             }
-            if (should_push_operator(op, q.operators, total_operations)){
-                push_opstack(op, q.operators, &total_operations);
+            if (should_push_operator(op, q->operators, *total_operations)){
+                push_opstack(op, q->operators, total_operations);
             }
             else {
-                while (should_shunt(op, q.operators, total_operations)){
-                    push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
+                while (should_shunt(op, q->operators, *total_operations)){
+                    push_postfix(q, 1, pop_opstack(q->operators, total_operations)->op, 0);
                 }
-                push_opstack(op, q.operators, &total_operations);
+                push_opstack(op, q->operators, total_operations);
             }
         } else if (*tokens == '(') {
             char *next_token = tokens + 1;
@@ -65,16 +60,29 @@ int calculate(char *tokens){
                 dprintf(2, "parse error\n");
                 return EXIT_FAILURE;
             }
-            push_opstack(getop(*tokens), q.operators, &total_operations);
+            push_opstack(getop(*tokens), q->operators, total_operations);
         } else if (*tokens == ')') {
-            while (q.operators[total_operations - 1]->op != '('){   
-                push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
+            while (q->operators[*total_operations - 1]->op != '('){   
+                push_postfix(q, 1, pop_opstack(q->operators, total_operations)->op, 0);
             }
-            pop_opstack(q.operators, &total_operations);
+            pop_opstack(q->operators, total_operations);
 
         }
         tokens += 1;
     }
+    return EXIT_SUCCESS;
+}
+
+int calculate(char *tokens){
+    struct queue q = {
+        .final_stack = NULL,
+    };
+    int total_operations = 0;
+    
+    if (parse(tokens, &q, &total_operations) == EXIT_FAILURE){
+        return EXIT_FAILURE;
+    }
+
     while (q.operators[0] != NULL){
         push_postfix(&q, 1, pop_opstack(q.operators, &total_operations)->op, 0);
     }

@@ -26,14 +26,14 @@ struct stack_element {
     struct stack_element *next;
 };
 
-void push_node(struct node** bottom, char data);
-
-char pop_node(struct node** top);
 struct queue {
     struct node *final_stack;
     struct stack_element *postfix;
     struct operator_type *operators[MAX_OP_STACK];
 };
+
+void push_node(struct node** bottom, char data);
+char pop_node(struct node** top);
 
 bool is_operand(char c);
 bool is_operator(char c);
